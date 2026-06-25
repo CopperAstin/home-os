@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Home OS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="home" class="screen">
+    <h1 class="title">Home OS</h1>
+
+    <div class="grid">
+      <div class="app" onclick="openApp('notes')">📝 Notes</div>
+      <div class="app" onclick="openApp('tools')">🛠 Tools</div>
+      <div class="app" onclick="openApp('about')">ℹ️ About</div>
+    </div>
+  </div>
+
+  <!-- APP VIEW -->
+  <div id="app" class="screen hidden">
+    <div id="appContent"></div>
+    <button class="back" onclick="closeApp()">← Home</button>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
