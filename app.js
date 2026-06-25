@@ -1,107 +1,96 @@
-// ===== UTIL: SHA-256 HASH =====
+// ---------- HASH ----------
 async function hash(text) {
-  const msgBuffer = new TextEncoder().encode(text);
-  const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+  const data = new TextEncoder().encode(text);
+  const buffer = await crypto.subtle.digest("SHA-256", data);
+  return [...new Uint8Array(buffer)]
+    .map(b => b.toString(16).padStart(2, "0"))
+    .join("");
 }
 
-// ===== INIT SYSTEM =====
-let ADMIN_USER = "Astin";
-
+// ---------- STORAGE ----------
 function getUsers() {
   return JSON.parse(localStorage.getItem("users") || "{}");
 }
 
-function saveUsers(users) {
-  localStorage.setItem("users", JSON.stringify(users));
+function saveUsers(u) {
+  localStorage.setItem("users", JSON.stringify(u));
 }
 
-// ===== FIRST TIME SETUP =====
-function setup() {
+// ---------- FIRST SETUP ----------
+function firstSetup() {
+  loginScreen.classList.add("hidden");
   setupScreen.classList.remove("hidden");
-  login.classList.add("hidden");
 }
 
-// Force first admin password change
-async function saveNewPassword() {
-  const pass = document.getElementById("newPass").value;
-  const hashed = await hash(pass);
+async function createAdmin() {
+  const pass = newPass.value;
+  const users = getUsers();
 
-  let users = getUsers();
-
-  users[ADMIN_USER] = {
-    pass: hashed,
+  users["Astin"] = {
+    pass: await hash(pass),
     role: "admin"
   };
 
   saveUsers(users);
 
-  alert("Password set. Now login.");
+  alert("Admin created. Now login.");
   location.reload();
 }
 
-// ===== LOGIN =====
+// ---------- LOGIN ----------
 async function login() {
   const u = user.value;
   const p = pass.value;
 
-  let users = getUsers();
+  const users = getUsers();
 
-  if (!users[u]) {
-    alert("User not found");
-    return;
-  }
+  if (!users[u]) return alert("User not found");
 
-  const hashed = await hash(p);
+  const ok = await hash(p);
 
-  if (hashed === users[u].pass) {
+  if (ok === users[u].pass) {
     localStorage.setItem("session", u);
-    showHome(u);
+    openHome(u);
   } else {
     alert("Wrong password");
   }
 }
 
-// ===== AUTO LOGIN =====
+// ---------- AUTO LOGIN ----------
 window.onload = () => {
-  const session = localStorage.getItem("session");
-  if (session) showHome(session);
+  const s = localStorage.getItem("session");
+  if (s) openHome(s);
 };
 
-function showHome(u) {
-  login.classList.add("hidden");
-  home.classList.remove("hidden");
+// ---------- HOME ----------
+function openHome(u) {
+  loginScreen.classList.add("hidden");
+  setupScreen.classList.add("hidden");
+  homeScreen.classList.remove("hidden");
 
-  welcome.innerText = "Logged in as " + u;
+  status.innerText = "Logged in as " + u;
 
   loadNotes();
 }
 
-// ===== LOGOUT =====
-function logout() {
+// ---------- LOCK ----------
+function lock() {
   localStorage.removeItem("session");
   location.reload();
 }
 
-// ===== ADMIN WIPE =====
-function wipe() {
-  if (localStorage.getItem("session") !== ADMIN_USER) {
-    alert("Admin only");
-    return;
-  }
-
-  localStorage.clear();
-  alert("System wiped");
-  location.reload();
-}
-
-// ===== NOTES =====
+// ---------- NOTES ----------
 function saveNotes() {
-  localStorage.setItem("notes_" + localStorage.getItem("session"), notes.value);
+  const u = localStorage.getItem("session");
+  localStorage.setItem("notes_" + u, notes.value);
 }
 
 function loadNotes() {
   const u = localStorage.getItem("session");
   notes.value = localStorage.getItem("notes_" + u) || "";
+}
+
+// ---------- LIGHT CONTROL (placeholder) ----------
+function toggleLight() {
+  alert("Light system not connected yet");
 }
