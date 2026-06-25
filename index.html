@@ -2,43 +2,43 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home OS Secure</title>
+  <title>Home OS</title>
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <!-- LOGIN -->
-<div id="login">
+<div id="loginScreen">
   <h1>Home OS</h1>
 
   <input id="user" placeholder="Username">
   <input id="pass" type="password" placeholder="Password">
 
   <button onclick="login()">Login</button>
-  <button onclick="setup()">First Setup</button>
+  <button onclick="firstSetup()">First Setup</button>
 </div>
 
-<!-- SETUP PASSWORD -->
+<!-- SETUP -->
 <div id="setupScreen" class="hidden">
-  <h2>Create New Password</h2>
+  <h2>Create Admin Password</h2>
   <input id="newPass" type="password" placeholder="New Password">
-  <button onclick="saveNewPassword()">Save</button>
+  <button onclick="createAdmin()">Save</button>
 </div>
 
 <!-- HOME -->
-<div id="home" class="hidden">
-  <h1>Home OS</h1>
-  <p id="welcome"></p>
+<div id="homeScreen" class="hidden">
+  <h2>Home OS</h2>
+  <p id="status"></p>
 
-  <button onclick="logout()">Lock</button>
-
-  <h3>Admin Panel</h3>
-  <button onclick="wipe()">Wipe System</button>
+  <button onclick="lock()">Lock</button>
 
   <h3>Notes</h3>
   <textarea id="notes"></textarea>
   <button onclick="saveNotes()">Save</button>
+
+  <h3>Light Control</h3>
+  <button onclick="toggleLight()">Toggle Light</button>
 </div>
 
 <script src="app.js"></script>
