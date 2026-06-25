@@ -1,29 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Home OS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home OS Secure</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-  <div id="home" class="screen">
-    <h1 class="title">Home OS</h1>
+<!-- LOGIN -->
+<div id="login">
+  <h1>Home OS</h1>
 
-    <div class="grid">
-      <div class="app" onclick="openApp('notes')">📝 Notes</div>
-      <div class="app" onclick="openApp('tools')">🛠 Tools</div>
-      <div class="app" onclick="openApp('about')">ℹ️ About</div>
-    </div>
-  </div>
+  <input id="user" placeholder="Username">
+  <input id="pass" type="password" placeholder="Password">
 
-  <!-- APP VIEW -->
-  <div id="app" class="screen hidden">
-    <div id="appContent"></div>
-    <button class="back" onclick="closeApp()">← Home</button>
-  </div>
+  <button onclick="login()">Login</button>
+  <button onclick="setup()">First Setup</button>
+</div>
 
-  <script src="app.js"></script>
+<!-- SETUP PASSWORD -->
+<div id="setupScreen" class="hidden">
+  <h2>Create New Password</h2>
+  <input id="newPass" type="password" placeholder="New Password">
+  <button onclick="saveNewPassword()">Save</button>
+</div>
+
+<!-- HOME -->
+<div id="home" class="hidden">
+  <h1>Home OS</h1>
+  <p id="welcome"></p>
+
+  <button onclick="logout()">Lock</button>
+
+  <h3>Admin Panel</h3>
+  <button onclick="wipe()">Wipe System</button>
+
+  <h3>Notes</h3>
+  <textarea id="notes"></textarea>
+  <button onclick="saveNotes()">Save</button>
+</div>
+
+<script src="app.js"></script>
 </body>
 </html>
